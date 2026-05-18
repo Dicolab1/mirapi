@@ -5,7 +5,7 @@ router.delete('/:id', async (req, res) => {
   const client = await pool.connect();
   
   try {
-    const id = parseInt(req.params.id);
+    const id = Number.parseInt(req.params.id);
     
     if (isNaN(id)) {
       return res.status(400).json({
