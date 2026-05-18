@@ -96,12 +96,12 @@ app.post('/admin/limpar', async (req, res) => {
     await client.query('COMMIT');
 
     const registrosRemovidos = {
-      pessoas_normal: parseInt(statsAntes.rows[0].pessoas_normal || 0),
-      pessoas_mir: parseInt(statsAntes.rows[0].pessoas_mir || 0),
-      lexical_nome: parseInt(lexicalStats.rows[0].lexical_nome || 0),
-      lexical_sobrenome: parseInt(lexicalStats.rows[0].lexical_sobrenome || 0),
-      lexical_cep: parseInt(lexicalStats.rows[0].lexical_cep || 0),
-      lexical_email: parseInt(lexicalStats.rows[0].lexical_email || 0)
+      pessoas_normal: Number.parseInt(statsAntes.rows[0].pessoas_normal || 0),
+      pessoas_mir: Number.parseInt(statsAntes.rows[0].pessoas_mir || 0),
+      lexical_nome: Number.parseInt(lexicalStats.rows[0].lexical_nome || 0),
+      lexical_sobrenome: Number.parseInt(lexicalStats.rows[0].lexical_sobrenome || 0),
+      lexical_cep: Number.parseInt(lexicalStats.rows[0].lexical_cep || 0),
+      lexical_email: Number.parseInt(lexicalStats.rows[0].lexical_email || 0)
     };
 
     console.log('✅ LIMPEZA TOTAL CONCLUÍDA!');
@@ -173,12 +173,12 @@ app.post('/admin/seed', async (req, res) => {
       let numeros = '';
       for (let i = 0; i < 9; i++) numeros += Math.floor(Math.random() * 10);
       let soma1 = 0;
-      for (let i = 0; i < 9; i++) soma1 += parseInt(numeros[i]) * (10 - i);
+      for (let i = 0; i < 9; i++) soma1 += Number.parseInt(numeros[i]) * (10 - i);
       let resto1 = (soma1 * 10) % 11;
       if (resto1 === 10) resto1 = 0;
       let soma2 = 0;
       const parcial = numeros + resto1;
-      for (let i = 0; i < 10; i++) soma2 += parseInt(parcial[i]) * (11 - i);
+      for (let i = 0; i < 10; i++) soma2 += Number.parseInt(parcial[i]) * (11 - i);
       let resto2 = (soma2 * 10) % 11;
       if (resto2 === 10) resto2 = 0;
       return numeros + resto1 + resto2;
@@ -236,8 +236,8 @@ app.post('/admin/seed', async (req, res) => {
       const cepToken = await obterOuCriarToken('lexical_cep', 'C', cep, contadores);
 
       const cpfBase = cpf.substring(0, 9);
-      const cpfMNE = encodeBase62(parseInt(cpfBase, 10));
-      const celMNE = encodeBase62(parseInt(celular, 10));
+      const cpfMNE = encodeBase62(Number.parseInt(cpfBase, 10));
+      const celMNE = encodeBase62(Number.parseInt(celular, 10));
 
       await client.query(`
         INSERT INTO pessoas_mir (id, nome_token, sobrenome_token, email_token, cep_token, casa, cpf_mne, cel_mne)
@@ -279,17 +279,17 @@ app.get('/estatisticas', async (req, res) => {
         (SELECT COUNT(*) FROM lexical_email) as emails
     `);
 
-    const totalRegistros = parseInt(normalCount.rows[0].count);
+    const totalRegistros = Number.parseInt(normalCount.rows[0].count);
     
     // Estimativa de bytes (simplificada)
     const normalBytes = totalRegistros * 105;  // ~105 bytes por registro tradicional
     const mirBytes = totalRegistros * 25;      // ~25 bytes por registro MIR
     
     const totalTokens = 
-      parseInt(tokensCount.rows[0].nomes || 0) +
-      parseInt(tokensCount.rows[0].sobrenomes || 0) +
-      parseInt(tokensCount.rows[0].ceps || 0) +
-      parseInt(tokensCount.rows[0].emails || 0);
+      Number.parseInt(tokensCount.rows[0].nomes || 0) +
+      Number.parseInt(tokensCount.rows[0].sobrenomes || 0) +
+      Number.parseInt(tokensCount.rows[0].ceps || 0) +
+      Number.parseInt(tokensCount.rows[0].emails || 0);
     
     const lexicalBytes = totalTokens * 50;
     const totalMirBytes = mirBytes + lexicalBytes;
