@@ -1,5 +1,5 @@
 // seed/seed_mir.js
-const path = require('path');
+const path = require('node:path');
 
 // Carregar .env da PASTA RAIZ
 require('dotenv').config({ path: path.join(__dirname, '../../.env') });
