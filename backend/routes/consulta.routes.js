@@ -32,7 +32,7 @@ router.get('/', async (req, res) => {
   
   try {
     const { termo, tipo, page = 1, limit = 20 } = req.query;
-    const offset = (parseInt(page) - 1) * parseInt(limit);
+    const offset = (Number.parseInt(page) - 1) * Number.parseInt(limit);
     
     if (!termo || termo.trim() === '') {
       return res.status(400).json({ erro: 'Termo de busca não informado' });
@@ -63,7 +63,7 @@ router.get('/', async (req, res) => {
         ORDER BY id DESC
         LIMIT $2 OFFSET $3
       `;
-      params = [tokens, parseInt(limit), offset];
+      params = [tokens, Number.parseInt(limit), offset];
       
     } else if (tipoBusca === 'email') {
       // Buscar token de email
@@ -82,7 +82,7 @@ router.get('/', async (req, res) => {
         ORDER BY id DESC
         LIMIT $2 OFFSET $3
       `;
-      params = [emailToken.rows[0].token, parseInt(limit), offset];
+      params = [emailToken.rows[0].token, Number.parseInt(limit), offset];
       
     } else if (tipoBusca === 'cpf') {
       // Buscar por CPF (MNE)
@@ -97,7 +97,7 @@ router.get('/', async (req, res) => {
           ORDER BY id DESC
           LIMIT $2 OFFSET $3
         `;
-        params = [cpfMNE, parseInt(limit), offset];
+        params = [cpfMNE, Number.parseInt(limit), offset];
       } else {
         return res.json({ dados: [], total_registros: 0, mensagem: 'CPF inválido' });
       }
@@ -119,7 +119,7 @@ router.get('/', async (req, res) => {
         ORDER BY id DESC
         LIMIT $2 OFFSET $3
       `;
-      params = [cepToken.rows[0].token, parseInt(limit), offset];
+      params = [cepToken.rows[0].token, Number.parseInt(limit), offset];
       
     } else {
       // Busca geral em todos os campos
@@ -141,7 +141,7 @@ router.get('/', async (req, res) => {
         ORDER BY id DESC
         LIMIT $2 OFFSET $3
       `;
-      params = [tokens, parseInt(limit), offset];
+      params = [tokens, Number.parseInt(limit), offset];
     }
     
     // Executar busca
@@ -166,7 +166,7 @@ router.get('/', async (req, res) => {
     }
     
     const totalResult = await mirdb.query(countQuery, countParams);
-    const totalRegistros = parseInt(totalResult.rows[0].count);
+    const totalRegistros = Number.parseInt(totalResult.rows[0].count);
     
     // Reconstruir dados
     const dados = [];
@@ -205,8 +205,8 @@ router.get('/', async (req, res) => {
     res.json({
       dados,
       total_registros: totalRegistros,
-      pagina_atual: parseInt(page),
-      total_paginas: Math.ceil(totalRegistros / parseInt(limit)),
+      pagina_atual: Number.parseInt(page),
+      total_paginas: Math.ceil(totalRegistros / Number.parseInt(limit)),
       tempo_execucao_ms: Date.now() - startTime
     });
     
