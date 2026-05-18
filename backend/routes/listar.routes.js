@@ -30,8 +30,8 @@ router.get('/', async (req, res) => {
   const startTime = Date.now();
   
   try {
-    const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 20;
+    const page = Number.parseInt(req.query.page) || 1;
+    const limit = Number.parseInt(req.query.limit) || 20;
     const offset = (page - 1) * limit;
     
     const pessoas = await mirdb.query(`
@@ -41,7 +41,7 @@ router.get('/', async (req, res) => {
     `, [limit, offset]);
     
     const totalResult = await mirdb.query('SELECT COUNT(*) FROM pessoas_mir');
-    const totalRegistros = parseInt(totalResult.rows[0].count);
+    const totalRegistros = Number.parseInt(totalResult.rows[0].count);
     
     const dados = [];
     for (const pessoa of pessoas.rows) {
@@ -102,71 +102,6 @@ router.get('/', async (req, res) => {
 });
 
 module.exports = router;
-
-// const router = require('express').Router();
-// const { mirdb } = require('../config/multiDb');
-// const { reconstruirValor } = require('../services/token.service');
-// const { formatarCPF, formatarCelular } = require('../services/mne.service');
-
-// router.get('/', async (req, res) => {
-//   const startTime = Date.now();
-  
-//   try {
-//     const page = parseInt(req.query.page) || 1;
-//     const limit = parseInt(req.query.limit) || 20;
-//     const offset = (page - 1) * limit;
-    
-//     const pessoas = await mirdb.query(`
-//       SELECT * FROM pessoas_mir
-//       ORDER BY id DESC
-//       LIMIT $1 OFFSET $2
-//     `, [limit, offset]);
-    
-//     const totalResult = await mirdb.query('SELECT COUNT(*) FROM pessoas_mir');
-//     const totalRegistros = parseInt(totalResult.rows[0].count);
-    
-//     const dados = [];
-//     for (const pessoa of pessoas.rows) {
-//       // Reconstruir tokens (vindos do lexicaldb)
-//       const [nome, sobrenome, cep, email] = await Promise.all([
-//         reconstruirValor('lexical_nome', pessoa.nome_token),
-//         reconstruirValor('lexical_sobrenome', pessoa.sobrenome_token),
-//         reconstruirValor('lexical_cep', pessoa.cep_token),
-//         reconstruirValor('lexical_email', pessoa.email_token)
-//       ]);
-      
-//       // Reconstruir MNE (matemático, não precisa de banco lexical)
-//       const cpfFormatado = pessoa.cpf_mne ? formatarCPF(pessoa.cpf_mne) : 'Não informado';
-//       const celFormatado = pessoa.cel_mne ? formatarCelular(pessoa.cel_mne) : 'Não informado';
-      
-//       dados.push({
-//         id: pessoa.id,
-//         nome: nome || 'Não informado',
-//         sobrenome: sobrenome || 'Não informado',
-//         cep: cep || 'Não informado',
-//         casa: pessoa.casa || 'S/N',
-//         cpf: cpfFormatado,
-//         email: email || 'Não informado',
-//         cel: celFormatado,
-//         criado_em: pessoa.created_at
-//       });
-//     }
-    
-//     res.json({
-//       dados,
-//       paginacao: {
-//         pagina_atual: page,
-//         limite: limit,
-//         total_registros: totalRegistros,
-//         total_paginas: Math.ceil(totalRegistros / limit)
-//       },
-//       tempo_execucao_ms: Date.now() - startTime
-//     });
-    
-//   } catch (error) {
-//     console.error('Erro na listagem:', error);
-//     res.status(500).json({ erro: error.message });
-//   }
 // });
 
 // module.exports = router;
