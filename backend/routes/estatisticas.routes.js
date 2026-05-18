@@ -84,7 +84,7 @@ router.get('/', async (req, res) => {
       mir_bytes: mirBytes,
       lexical_bytes: lexicalBytes,
       total_mir: totalMirBytes,
-      economia_percentual: parseFloat(economia),
+      economia_percentual: Number.parseFloat(economia),
       detalhes: {
         registros: totalRegistros,
         tokens_unicos: totalTokens,
