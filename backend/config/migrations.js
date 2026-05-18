@@ -1,6 +1,6 @@
 // config/migrations.js
-const fs = require('fs');
-const path = require('path');
+const fs = require('node:fs');
+const path = require('node:path');
 const { mirdb, lexicalDb } = require('./multiDb');
 
 const MIGRATIONS_DIR = path.join(__dirname, '../migrations');
