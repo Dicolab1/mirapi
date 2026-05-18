@@ -73,7 +73,7 @@ function gerarCPF() {
   
   let soma1 = 0;
   for (let i = 0; i < 9; i++) {
-    soma1 += parseInt(numeros[i]) * (10 - i);
+    soma1 += Number.parseInt(numeros[i]) * (10 - i);
   }
   let resto1 = (soma1 * 10) % 11;
   if (resto1 === 10) resto1 = 0;
@@ -81,7 +81,7 @@ function gerarCPF() {
   let soma2 = 0;
   const parcial = numeros + resto1;
   for (let i = 0; i < 10; i++) {
-    soma2 += parseInt(parcial[i]) * (11 - i);
+    soma2 += Number.parseInt(parcial[i]) * (11 - i);
   }
   let resto2 = (soma2 * 10) % 11;
   if (resto2 === 10) resto2 = 0;
@@ -231,8 +231,8 @@ async function popular() {
         
         // MNE (Mathematical Numeric Encoding) para CPF e Celular
         const cpfBase = cpf.substring(0, 9);
-        const cpfMNE = encodeBase62(parseInt(cpfBase, 10));
-        const celMNE = encodeBase62(parseInt(celular, 10));
+        const cpfMNE = encodeBase62(Number.parseInt(cpfBase, 10));
+        const celMNE = encodeBase62(Number.parseInt(celular, 10));
         
         // Inserir na tabela MIR (apenas tokens + MNE)
         await client.query(`
