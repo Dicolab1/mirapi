@@ -18,7 +18,7 @@ function gerarCPF() {
   
   let soma1 = 0;
   for (let i = 0; i < 9; i++) {
-    soma1 += parseInt(numeros[i]) * (10 - i);
+    soma1 += Number.parseInt(numeros[i]) * (10 - i);
   }
   let resto1 = (soma1 * 10) % 11;
   if (resto1 === 10) resto1 = 0;
@@ -26,7 +26,7 @@ function gerarCPF() {
   let soma2 = 0;
   const parcial = numeros + resto1;
   for (let i = 0; i < 10; i++) {
-    soma2 += parseInt(parcial[i]) * (11 - i);
+    soma2 += Number.parseInt(parcial[i]) * (11 - i);
   }
   let resto2 = (soma2 * 10) % 11;
   if (resto2 === 10) resto2 = 0;
@@ -354,7 +354,7 @@ function proximaPagina() { if (paginaAtual < totalPaginas) irParaPagina(paginaAt
 function mudarLimite() {
   const select = document.getElementById('limitePorPagina');
   if (select) {
-    const novoLimite = parseInt(select.value);
+    const novoLimite = Number.parseInt(select.value);
     if (novoLimite !== limitePorPagina) {
       limitePorPagina = novoLimite;
       paginaAtual = 1;
@@ -472,7 +472,7 @@ async function confirmarSeed() {
     const response = await fetch('/admin/seed', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ senha, quantidade: parseInt(quantidade) })
+      body: JSON.stringify({ senha, quantidade: Number.parseInt(quantidade) })
     });
     
     const data = await response.json();
