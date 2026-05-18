@@ -7,7 +7,7 @@ router.delete('/:id', async (req, res) => {
   try {
     const id = Number.parseInt(req.params.id);
     
-    if (isNaN(id)) {
+    if (Number.isNaN(id)) {
       return res.status(400).json({
         erro: 'ID inválido'
       });
