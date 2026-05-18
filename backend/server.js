@@ -17,7 +17,28 @@ const consultaRoutes = require('./routes/consulta.routes');
 const app = express();
 
 app.disable('x-powered-by');
-app.use(cors());
+//app.use(cors());
+
+const allowedOrigins = new Set([
+  'http://localhost:3000',
+  'https://mirapi-1.onrender.com/'
+]);
+
+app.use(cors({
+  origin: function (origin, callback) {
+
+    if (!origin) {
+      return callback(null, true);
+    }
+
+    if (allowedOrigins.has(origin)) {
+      return callback(null, true);
+    }
+
+    return callback(new Error('Origem não permitida pelo CORS'));
+  }
+}));
+
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '../frontend')));
 
