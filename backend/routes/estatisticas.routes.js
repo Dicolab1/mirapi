@@ -38,7 +38,7 @@ router.get('/', async (req, res) => {
       celular_mne: 6  // Base62 do número completo
     };
     
-    const totalRegistros = parseInt(normalCount.rows[0].count);
+    const totalRegistros = Number.parseInt(normalCount.rows[0].count);
     
     // Calcular bytes estimados (armazenamento tradicional)
     const normalBytes = totalRegistros * (
@@ -64,10 +64,10 @@ router.get('/', async (req, res) => {
     
     // Overhead das tabelas lexicais (estimativa: ~50 bytes por token)
     const totalTokens = 
-      parseInt(tokensCount.rows[0].nomes || 0) +
-      parseInt(tokensCount.rows[0].sobrenomes || 0) +
-      parseInt(tokensCount.rows[0].ceps || 0) +
-      parseInt(tokensCount.rows[0].emails || 0);
+      Number.parseInt(tokensCount.rows[0].nomes || 0) +
+      Number.parseInt(tokensCount.rows[0].sobrenomes || 0) +
+      Number.parseInt(tokensCount.rows[0].ceps || 0) +
+      Number.parseInt(tokensCount.rows[0].emails || 0);
     
     const lexicalBytes = totalTokens * 50;
     const totalMirBytes = mirBytes; // + lexicalBytes; Como os bancos foram separados, consideramos apenas o MIR para comparação direta
@@ -89,10 +89,10 @@ router.get('/', async (req, res) => {
         registros: totalRegistros,
         tokens_unicos: totalTokens,
         distribuicao_tokens: {
-          nomes: parseInt(tokensCount.rows[0].nomes || 0),
-          sobrenomes: parseInt(tokensCount.rows[0].sobrenomes || 0),
-          ceps: parseInt(tokensCount.rows[0].ceps || 0),
-          emails: parseInt(tokensCount.rows[0].emails || 0)
+          nomes: Number.parseInt(tokensCount.rows[0].nomes || 0),
+          sobrenomes: Number.parseInt(tokensCount.rows[0].sobrenomes || 0),
+          ceps: Number.parseInt(tokensCount.rows[0].ceps || 0),
+          emails: Number.parseInt(tokensCount.rows[0].emails || 0)
         },
         explicacao: totalRegistros < 1000 
           ? "⚠️ Mesmo com poucos registros, é observada uma economia significativa."
