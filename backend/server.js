@@ -17,7 +17,6 @@ const consultaRoutes = require('./routes/consulta.routes');
 const app = express();
 
 app.disable('x-powered-by');
-//app.use(cors());
 
 const allowedOrigins = new Set([
   'http://localhost:3000',
